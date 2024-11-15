@@ -1,21 +1,21 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { trpc } from "../_trpc/client";
+import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { trpc } from "../_trpc/client";
 
 const Page = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const origin = searchParams.get("origin");
 
-  trpc.authCallback.useQuery(undefined, {
-    // @ts-expect-error didnt work without it
+  const { data } = trpc.authCallback.useQuery(undefined, {
+    // @ts-expect-error typo not working here
     onSuccess: ({ success }) => {
       if (success) {
-        // user is synced to db
-        router.push(origin ? `/${origin}` : "/dashboard");
+        console.log("User is synced to db");
       }
     },
     onError: (err: { data: { code: string } }) => {
@@ -26,6 +26,12 @@ const Page = () => {
     retry: true,
     retryDelay: 500,
   });
+
+  useEffect(() => {
+    if (data?.success) {
+      router.push(origin ? `/${origin}` : "/dashboard");
+    }
+  }, [data, origin, router]);
 
   return (
     <div className="w-full mt-24 flex justify-center">
