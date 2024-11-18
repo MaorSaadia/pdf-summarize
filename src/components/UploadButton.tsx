@@ -13,7 +13,7 @@ import { Progress } from "./ui/progress";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
-const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
+const UploadDropzone = () => {
   const router = useRouter();
 
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -99,9 +99,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
                   <span className="font-semibold">Click to upload</span> or drag
                   and drop
                 </p>
-                <p className="text-xs text-zinc-500">
-                  PDF (up to {isSubscribed ? "16" : "4"}MB)
-                </p>
+                <p className="text-xs text-zinc-500">PDF up to 4MB</p>
               </div>
 
               {acceptedFiles && acceptedFiles[0] ? (
@@ -147,7 +145,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
   );
 };
 
-const UploadButton = ({ isSubscribed }: { isSubscribed: boolean }) => {
+const UploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -165,7 +163,7 @@ const UploadButton = ({ isSubscribed }: { isSubscribed: boolean }) => {
       </DialogTrigger>
 
       <DialogContent>
-        <UploadDropzone isSubscribed={isSubscribed} />
+        <UploadDropzone />
       </DialogContent>
     </Dialog>
   );
